@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Doctor Appointment Booking</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right,#e0f7fa,#e3f2fd);
+}
+
+.header{
+  background:#0288d1;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+}
+
+.container{
+  width:450px;
+  margin:30px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 0 20px rgba(0,0,0,0.2);
+}
+
+.banner{
+  background:#e1f5fe;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+label{
+  display:block;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+button{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  background:#0288d1;
+  color:white;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#01579b;
+}
+
+.success{
+  margin-top:15px;
+  padding:10px;
+  background:#e8f5e9;
+  border-radius:8px;
+  color:green;
+  font-weight:bold;
+  text-align:center;
+}
+
+.actions button{
+  width:48%;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">Online Doctor Appointment System</div>
+
+<div class="container">
+
+<div class="banner">🩺 <b>Doctor Appointment Booking</b></div>
+
+<label>Patient Name</label>
+<input type="text" id="pname">
+
+<label>Mobile Number</label>
+<input type="tel" id="mobile" placeholder="10 digit mobile number">
+
+<button onclick="sendOTP()">Send OTP</button>
+
+<label>Enter OTP</label>
+<input type="number" id="otpInput" placeholder="Enter OTP">
+
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<label>Department</label>
+<select id="department" onchange="loadDoctors()">
+  <option value="">Select Department</option>
+  <option value="general">General Medicine</option>
+  <option value="cardio">Cardiology</option>
+  <option value="ortho">Orthopedics</option>
+</select>
+
+<label>Doctor</label>
+<select id="doctor">
+  <option>Select Doctor</option>
+</select>
+
+<label>Hospital / Place</label>
+<input type="text" id="place">
+
+<label>Date</label>
+<input type="date" id="date">
+
+<label>Time</label>
+<select id="time">
+  <option>10:00 AM</option>
+  <option>11:00 AM</option>
+  <option>12:00 PM</option>
+</select>
+
+<label>Problem Description</label>
+<textarea rows="3" id="problem"></textarea>
+
+<label>Payment Mode</label>
+<select>
+  <option>UPI</option>
+  <option>Debit Card</option>
+  <option>Credit Card</option>
+</select>
+
+<button onclick="bookAppointment()">Book Appointment</button>
+
+<div id="successMsg"></div>
+
+<div class="actions" id="printSection" style="display:none;">
+  <button onclick="printAppointment()">🖨 Print</button>
+  <button onclick="printAppointment()">⬇ Download</button>
+</div>
+
+</div>
+
+<script>
+let generatedOTP;
+let appointmentID;
+
+function sendOTP(){
+  let mobile = document.getElementById("mobile").value;
+  if(mobile.length !== 10){
+    alert("Enter valid 10 digit mobile number");
+    return;
+  }
+  generatedOTP = Math.floor(1000 + Math.random()*9000);
+  alert("Demo OTP (for project): " + generatedOTP);
+}
+
+function verifyOTP(){
+  let otp = document.getElementById("otpInput").value;
+  if(otp == generatedOTP){
+    alert("Mobile Number Verified ✅");
+  }else{
+    alert("Invalid OTP ❌");
+  }
+}
+
+function loadDoctors(){
+  let dept = document.getElementById("department").value;
+  let doctor = document.getElementById("doctor");
+  doctor.innerHTML = "";
+
+  if(dept === "general"){
+    doctor.innerHTML += "<option>Dr. Ramesh (MBBS)</option>";
+    doctor.innerHTML += "<option>Dr. Sita (MD)</option>";
+  }
+  else if(dept === "cardio"){
+    doctor.innerHTML += "<option>Dr. Kumar (Cardiologist)</option>";
+    doctor.innerHTML += "<option>Dr. Anjali (Heart Specialist)</option>";
+  }
+  else if(dept === "ortho"){
+    doctor.innerHTML += "<option>Dr. Ravi (Orthopedic)</option>";
+  }
+}
+
+function bookAppointment(){
+  appointmentID = "APT" + Math.floor(Math.random()*100000);
+  document.getElementById("successMsg").innerHTML =
+  "<div class='success'>✅ Appointment Booked Successfully<br>📄 Appointment ID: <b>"+appointmentID+"</b></div>";
+  document.getElementById("printSection").style.display = "block";
+}
+
+function printAppointment(){
+  window.print();
+}
+</script>
+
+</body>
+</html>
